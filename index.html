@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Chunks</title>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="l-header">
+      <h1 class="l-logo">
+        <a href="index.html" class="link--hidden">Chunks</a>
+      </h1>
+      <p class="smallprint">A super duper, teeny tiny functional library</p>
+    </header>
+    <article class="l-content">
+      <p><strong>Chunks</strong> is a small functional library for Lua, and a port of the original “<a href="https://github.com/gummesson/chunks">Chunks</a>” library written in JavaScript.</p>
+      <p><a href="docs/index.html">The annotated source code is available</a>.
+<h2>Installation</h2>
+<pre><code>luarocks build https://raw.github.com/gummesson/chunks.lua/master/chunks-dev-1.rockspec</code></pre>
+<h2>API</h2>
+<h3>Collections</h3>
+<h4>Chunks.each</h4>
+<pre><code class="lua">Chunks.each(tbl, iterator)</code></pre>
+<p>Executes the <code>iterator</code> on every item in the <code>tbl</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua"><span class="keyword">local</span> results = {}
+Chunks.each({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="built_in">table</span>.insert(results, v)
+<span class="keyword">end</span>)
+<span class="comment">--- {1, 2, 3}</span></code></pre>
+<pre><code class="lua"><span class="keyword">local</span> results = {}
+Chunks.each({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="built_in">table</span>.insert(results, v)
+<span class="keyword">end</span>)
+<span class="comment">--- {1, 2, 3}</span></code></pre>
+<h4>Chunks.map</h4>
+<pre><code class="lua">Chunks.map(tbl, iterator)</code></pre>
+<p>Returns a new and transformed table by executing the <code>iterator</code> on every item in the <code>tbl</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.map({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v + <span class="number">1</span>
+<span class="keyword">end</span>)
+<span class="comment">-- {2, 3, 4}</span></code></pre>
+<pre><code class="lua">Chunks.map({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v + <span class="number">1</span>
+<span class="keyword">end</span>)
+<span class="comment">-- {2, 3, 4}</span></code></pre>
+<h4>Chunks.filter</h4>
+<pre><code class="lua">Chunks.filter(tbl, iterator)</code></pre>
+<p>Returns a new table by executing the <code>iterator</code> on every item in the <code>tbl</code>. Only the items that evalute to <code>true</code> in the <code>iterator</code> will be added to the table.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.filter({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v &gt; <span class="number">1</span>
+<span class="keyword">end</span>)
+<span class="comment">-- {2, 3}</span></code></pre>
+<pre><code class="lua">Chunks.filter({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v &gt; <span class="number">1</span>
+<span class="keyword">end</span>)
+<span class="comment">-- {2, 3}</span></code></pre>
+<h4>Chunks.reduce</h4>
+<pre><code class="lua">Chunks.reduce(tbl, iterator[, memo])</code></pre>
+<p>Returns a single value by executing the <code>iterator</code> on every item in the <code>tbl</code> and passing the previous value, <code>memo</code>, to the <code>iterator</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.reduce({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(m, v)</span></span>
+  <span class="keyword">return</span> m + v
+<span class="keyword">end</span>)
+<span class="comment">-- 6</span></code></pre>
+<pre><code class="lua">Chunks.reduce({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(m, v)</span></span>
+  <span class="keyword">return</span> m + v
+<span class="keyword">end</span>, <span class="number">1</span>)
+<span class="comment">-- 7</span></code></pre>
+<h4>Chunks.some</h4>
+<pre><code class="lua">Chunks.some(tbl, iterator)</code></pre>
+<p>Returns either <code>true</code> or <code>false</code> by executing the <code>iterator</code> on every item in the <code>tbl</code>. It&#39;ll return <code>true</code> if one of the items in the <code>tbl</code> matches the <code>iterator</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.some({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v == <span class="number">3</span>
+<span class="keyword">end</span>)
+<span class="comment">-- true</span></code></pre>
+<pre><code class="lua">Chunks.some({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v &gt; <span class="number">4</span>
+<span class="keyword">end</span>)
+<span class="comment">-- false</span></code></pre>
+<h4>Chunks.every</h4>
+<pre><code class="lua">Chunks.every(tbl, iterator)</code></pre>
+<p>Returns either <code>true</code> or <code>false</code> by executing the <code>iterator</code> on every item in the <code>tbl</code>. It&#39;ll return <code>true</code> if all of the items in the <code>tbl</code> matches the <code>iterator</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.every({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v &lt; <span class="number">5</span>
+<span class="keyword">end</span>)
+<span class="comment">-- true</span></code></pre>
+<pre><code class="lua">Chunks.every({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(v, k)</span></span>
+  <span class="keyword">return</span> v &gt; <span class="number">2</span>
+<span class="keyword">end</span>)
+<span class="comment">-- false</span></code></pre>
+<h4>Chunks.index</h4>
+<pre><code class="lua">Chunks.index(tbl, item)</code></pre>
+<p>Returns the index of the <code>item</code> in the <code>tbl</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.index({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="number">2</span>)
+<span class="comment">-- 2</span></code></pre>
+<pre><code class="lua">Chunks.index({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="number">4</span>)
+<span class="comment">-- nil</span></code></pre>
+<h4>Chunks.contains</h4>
+<pre><code class="lua">Chunks.contains(tbl, item)</code></pre>
+<p>Determines if the <code>tbl</code> contains the <code>item</code>. Returns either <code>true</code> or <code>false</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.contains({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}, <span class="number">2</span>)
+<span class="comment">-- true</span></code></pre>
+<pre><code class="lua">Chunks.contains({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="number">4</span>)
+<span class="comment">-- false</span></code></pre>
+<h4>Chunks.size</h4>
+<pre><code class="lua">Chunks.size(tbl)</code></pre>
+<p>Returns the size of the <code>tbl</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.size({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="comment">-- 3</span></code></pre>
+<pre><code class="lua">Chunks.size({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>})
+<span class="comment">-- 3</span></code></pre>
+<h4>Chunks.clone</h4>
+<pre><code class="lua">Chunks.clone(tbl)</code></pre>
+<p>Returns a clone of the <code>tbl</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.clone({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="comment">-- {1, 2, 3}</span></code></pre>
+<pre><code class="lua">Chunks.clone({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>})
+<span class="comment">-- {one = 1, two = 2, three = 3}</span></code></pre>
+<h4>Chunks.sort</h4>
+<pre><code class="lua">Chunks.sort(tbl[, comp])</code></pre>
+<p>Returns a new table with the values from the <code>tbl</code> sorted, either by the default order or the <code>comp</code> function.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.sort({<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>})
+<span class="comment">-- {1, 2, 3}</span></code></pre>
+<pre><code class="lua">Chunks.sort({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="function"><span class="keyword">function</span><span class="params">(a, b)</span></span> 
+  <span class="keyword">return</span> a &gt; b
+<span class="keyword">end</span>)
+<span class="comment">-- {3, 2, 1}</span></code></pre>
+<h3>Types</h3>
+<h4>Chunks.isArray</h4>
+<pre><code class="lua">Chunks.isArray(tbl)</code></pre>
+<p>Determines if the <code>tbl</code> is array-like. Returns either <code>true</code> or <code>false</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.isArray({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="comment">-- true</span></code></pre>
+<pre><code class="lua">Chunks.isArray({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>})
+<span class="comment">-- false</span></code></pre>
+<h4>Chunks.isDict</h4>
+<pre><code class="lua">Chunks.isDict(tbl)</code></pre>
+<p>Determines if the <code>tbl</code> is dictionary-like. Returns either <code>true</code> or <code>false</code>.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.isDict({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>})
+<span class="comment">-- true</span></code></pre>
+<pre><code class="lua">Chunks.isDict({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="comment">-- false</span></code></pre>
+<h3>Arrays</h3>
+<h4>Chunks.first</h4>
+<pre><code class="lua">Chunks.first(tbl)</code></pre>
+<p>Returns the first item in the <code>tbl</code>.</p>
+<h5>Example</h5>
+<pre><code class="lua">Chunks.first({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="comment">-- 1</span></code></pre>
+<h4>Chunks.last</h4>
+<pre><code class="lua">Chunks.last(tbl)</code></pre>
+<p>Returns the last item in the <code>tbl</code>.</p>
+<h5>Example</h5>
+<pre><code class="lua">Chunks.last({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="comment">-- 3</span></code></pre>
+<h4>Chunks.flatten</h4>
+<pre><code class="lua">Chunks.flatten(tbl[, memo])</code></pre>
+<p>Returns a new table by flattening the nested tables in the <code>tbl</code>. If the <code>memo</code> is provided it&#39;ll get used as a starting point for the new table.</p>
+<h5>Examples</h5>
+<pre><code class="lua">Chunks.flatten({{<span class="number">1</span>}, {{<span class="number">2</span>}, {<span class="number">3</span>}}})
+<span class="comment">-- {1, 2, 3}</span></code></pre>
+<pre><code class="lua">Chunks.flatten({{<span class="number">2</span>}, {{<span class="number">3</span>}, {<span class="number">4</span>}}}, {<span class="number">1</span>})
+<span class="comment">-- {1, 2, 3, 4}</span></code></pre>
+<h3>Dictionaries</h3>
+<h4>Chunks.keys</h4>
+<pre><code class="lua">Chunks.keys(tbl)</code></pre>
+<p>Returns a new table with keys from the <code>tbl</code>.</p>
+<h5>Example</h5>
+<pre><code class="lua">Chunks.keys({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>})
+<span class="comment">-- {'one', 'two', 'three'}</span></code></pre>
+<h4>Chunks.values</h4>
+<pre><code class="lua">Chunks.values(tbl)</code></pre>
+<p>Returns a new table with values from the <code>tbl</code>.</p>
+<h5>Example</h5>
+<pre><code class="lua">Chunks.values({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>})
+<span class="comment">-- {1, 2, 3}</span></code></pre>
+<h4>Chunks.has</h4>
+<pre><code class="lua">Chunks.has(tbl, key)</code></pre>
+<p>Determines if the <code>tbl</code> has the <code>key</code>. Returns either <code>true</code> or <code>false</code>.</p>
+<h5>Example</h5>
+<pre><code class="lua">Chunks.has({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, <span class="string">'two'</span>)
+<span class="comment">-- true</span></code></pre>
+<h4>Chunks.extend</h4>
+<pre><code class="lua">Chunks.extend(tbl, src)</code></pre>
+<p>Merges the properties in the <code>tbl</code> together with the properties in the <code>src</code>.</p>
+<h5>Example</h5>
+<pre><code class="lua">Chunks.extend({one = <span class="number">1</span>, two = <span class="number">2</span>, three = <span class="number">3</span>}, {three = <span class="number">4</span>})
+<span class="comment">-- {one = 1, two = 2, three = 4}</span></code></pre>
+
+    </article>
+    <footer class="l-footer">
+      <p class="smallprint">Another small thing by <a href="http://ellengummesson.com/">Ellen Gummesson</a>. <a href="https://github.com/gummesson/chunks.lua">Source on GitHub</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>
