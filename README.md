@@ -1,5 +1,7 @@
 # Chunks
 
+[![Build Status](https://travis-ci.org/gummesson/chunks.lua.png?branch=master)](https://travis-ci.org/gummesson/chunks.lua)
+
 A super duper, teeny tiny functional library for Lua, and a port of the original [Chunks](https://github.com/gummesson/chunks) library written in JavaScript.
 
 ## Functions
