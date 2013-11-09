@@ -4,6 +4,12 @@
 
 A super duper, teeny tiny functional library for Lua, and a port of the original [Chunks](https://github.com/gummesson/chunks) library written in JavaScript.
 
+## Installation
+
+~~~
+luarocks build https://raw.github.com/gummesson/chunks.lua/master/chunks-dev-1.rockspec
+~~~
+
 ## Functions
 
 ### Collections
